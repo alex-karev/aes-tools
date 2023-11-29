@@ -1,0 +1,64 @@
+{   
+    "path": "ASAP.tsv",
+    "author": ["Ben Hamner", "Jaison Morgan", "lynnvandev", "Mark Shermis", "Tom Vander Ark"],
+    "title": "The Hewlett Foundation: Automated Essay Scoring",
+    "publisher": "Kaggle",
+    "year": 2012,
+    "url": "https://kaggle.com/competitions/asap-aes",
+    "skip_first_line": true,
+    "columns": {
+        "prompt": 1,
+        "essay": 2,
+        "score": 6
+    },
+    "prompts": [
+        {
+            "id": 1,
+            "min_score": 2,
+            "max_score": 12,
+            "genre": "Argument"
+        },
+        {
+            "id": 2,
+            "min_score": 1,
+            "max_score": 6,
+            "genre": "Argument"
+        },
+        {
+            "id": 3,
+            "min_score": 0,
+            "max_score": 3,
+            "genre": "Explanation"
+        },
+        {
+            "id": 4,
+            "min_score": 0,
+            "max_score": 3,
+            "genre": "Explanation"
+        },
+        {
+            "id": 5,
+            "min_score": 0,
+            "max_score": 4,
+            "genre": "Explanation"
+        },
+        {
+            "id": 6,
+            "min_score": 0,
+            "max_score": 4,
+            "genre": "Explanation"
+        },
+        {
+            "id": 7,
+            "min_score": 0,
+            "max_score": 30,
+            "genre": "Narrative"
+        },
+        {
+            "id": 8,
+            "min_score": 0,
+            "max_score": 60,
+            "genre": "Narrative"
+        }
+    ]
+}
