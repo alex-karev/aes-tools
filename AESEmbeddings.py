@@ -80,3 +80,10 @@ class AESEmbeddings:
             # Save emdeddings
             torch.save(embeddings, save_path)
         return embeddings
+
+    def cache_all_data(self, rewrite = False):
+        """Generates embeddings and caches them for all essays in dataset.
+        Rewrites existing cache if rewrite is True."""
+        for i in range(self.data.count_essays()):
+            self.get_embeddings(i, rewrite=rewrite)
+            print("{}/{}".format(i,self.data.count_essays()))
