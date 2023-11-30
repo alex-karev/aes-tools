@@ -7,6 +7,7 @@ For each dataset, a special JSON card is required:
 
 ```json
 {   
+    "id": "UNIQUE_DATASET_ID",
     "path": "PATH_TO_DATASET",
     "author": ["AUTHOR1", "AUTHOR2", ...],
     "title": "DATASET_NAME",

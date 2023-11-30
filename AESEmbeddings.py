@@ -21,7 +21,7 @@ class AESEmbeddings:
         self.model_loaded: bool = False
         self.max_length = max_length
         self.cache_path = "cached_embeddings"
-        self.cache_filename = "essay{}.pt"
+        self.cache_filename = "{}-{}.pt"
     
     def load_model(self):
         """Loads model into memory. Called automatically when needed"""
@@ -63,7 +63,7 @@ class AESEmbeddings:
         if not os.path.exists(save_path):
             os.mkdir(save_path)
         # Define path for saving tensors
-        save_path = os.path.join(save_path, self.cache_filename.format(id))
+        save_path = os.path.join(save_path, self.cache_filename.format(self.data.get_dataset_id(), id))
         # Read from cache if cache exists and not marked for rewrite
         if os.path.exists(save_path) and not rewrite:
             embeddings = torch.load(save_path)

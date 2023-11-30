@@ -36,6 +36,10 @@ class AESData:
     # Meta
     #
     
+    def get_dataset_id(self) -> str:
+        """Returns unique dataset id (needed for caching)."""
+        return self.p["id"]
+
     def get_dataset_path(self) -> str:
         """Returns the path where the dataset is located."""
         return self.p["path"]
