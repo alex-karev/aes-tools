@@ -43,3 +43,9 @@ You can use `pydoc` to read the class documentation:
 ```bash
 pydoc AESData
 ```
+
+## Embeddings Abstraction
+
+`AESEmbeddings.py` contains `AESEmbeddings` class which makes it possible to generate and cache embeddings for any essay by id.
+
+You can use initialize `AESEmdeddigns` with `AESData` as argument and then use `get_embeddings` function to generate embeddings for any essay.
