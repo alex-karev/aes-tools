@@ -47,6 +47,6 @@ pydoc AESData
 
 ## Embeddings Abstraction
 
-`AESEmbeddings.py` contains `AESEmbeddings` class which makes it possible to generate and cache embeddings for any essay by id.
+`AESEmbeddings.py` contains `AESEmbeddings` and `AESSententenceEmbeddings` classes which makes it possible to generate and cache embeddings for any essay by id.
 
-You can use initialize `AESEmdeddigns` with `AESData` as argument and then use `get_embeddings` function to generate embeddings for any essay.
+You can use initialize them with `AESData` as argument and then use `get_embeddings` function to generate embeddings for any essay by its id.

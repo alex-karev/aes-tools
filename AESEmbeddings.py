@@ -2,6 +2,7 @@ import AESData
 import os
 import json
 import torch
+from sentence_transformers import SentenceTransformer
 from transformers import BertTokenizer, BertModel
 
 class AESEmbeddings:
@@ -54,12 +55,18 @@ class AESEmbeddings:
         """Get maximum input length for current run"""
         return self.max_length
 
+    def encode_essay(self, int: id):
+        """Use loaded model to get embeddings from essay"""
+        text = self.data.get_essay(id)
+        encoded_input = self.tokenizer(text, return_tensors='pt', truncation=True, max_length=self.max_length)
+        return self.model(**encoded_input)
+
     def get_embeddings(self, id: int, rewrite=False):
         """Returns embeddings for essay with specified id and caches the result. 
         If rewrite option is set to True the embeddings will be regenerated again instead of reading the cache."""
         embeddings = None
         # Create directory for cache
-        save_path = os.path.join(self.cache_path, self.model_name)
+        save_path = os.path.join(self.cache_path, self.model_name.split("/")[-1])
         if not os.path.exists(save_path):
             os.mkdir(save_path)
         # Define path for saving tensors
@@ -73,10 +80,7 @@ class AESEmbeddings:
             if not self.model_loaded:
                 self.load_model()
             # Tokenize
-            text = self.data.get_essay(id)
-            encoded_input = self.tokenizer(text, return_tensors='pt', truncation=True, max_length=self.max_length)
-            # Get embeddings
-            embeddings = self.model(**encoded_input)
+            embeddings = self.encode_essay(id)
             # Save emdeddings
             torch.save(embeddings, save_path)
         return embeddings
@@ -87,3 +91,36 @@ class AESEmbeddings:
         for i in range(self.data.count_essays()):
             self.get_embeddings(i, rewrite=rewrite)
             print("{}/{}".format(i,self.data.count_essays()))
+
+class AESSentenceEmbeddings(AESEmbeddings):
+    """Abstraction for embedding generation and caching using Sentence Transformers"""
+
+    def __init__(self, data: AESData, model_name: str = "sentence-transformers/all-distilroberta-v1", max_length: int = -1):
+        """Constructor. Requires model_name and tokenizer. 
+        If max_length is not specified, it is assumed that maximum input length is the maximum input length of a model."""
+        self.data: AESData = data
+        self.model_name: str = model_name
+        self.model = None
+        self.model_loaded: bool = False
+        self.max_length = max_length
+        self.cache_path = "cached_sentence_embeddings"
+        self.cache_filename = "{}-{}.pt"
+    
+    def load_model(self):
+        """Loads model into memory. Called automatically when needed"""
+        print("Loading {} model...".format(self.model_name))
+        self.model = SentenceTransformer(self.model_name)
+        self.model_loaded = True
+        if self.max_length == -1:
+            self.max_length = self.model.max_seq_length
+    
+    def get_model_max_length(self) -> int:
+        """Get maximum input length of currently loaded model"""
+        if not self.model_loaded:
+            self.load_model()
+        return self.model.max_seq_length
+
+    def encode_essay(self, id: int):
+        """Use loaded model to get embeddings from essay"""
+        sentences = self.data.get_essay_sentences(id)
+        return self.model.encode(sentences)

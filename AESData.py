@@ -84,14 +84,14 @@ class AESData:
         """Returns the essay's full text."""
         return self.d[id][self.ESSAY_COL]
     
-    def get_essay_as_arr(self, id: int) -> list:
+    def get_essay_sentences(self, id: int) -> list:
+        """Returns the essay's full text split by sentences"""
+        return self.tokenizer.tokenize(self.get_essay(id))
+
+    def get_essay_arr(self, id: int) -> list:
         """Returns the essay's full text, where each sentence is an array of words."""
         essay = []
-        for sentence in self.tokenizer.tokenize(self.get_essay(id)):
-            essay.append(sentence.split())
-        return essay
-        sentences = self.get_essay(id).strip().replace("\n","").split(".")
-        for sentence in sentences:
+        for sentence in self.get_essay_sentences(id):
             essay.append(sentence.split())
         return essay
     
