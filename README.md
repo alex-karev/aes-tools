@@ -1,9 +1,25 @@
-# Variaous Experiments with AES
+# Experiments with AES
 
-## Dataset Abstraction
+## Documentation
+You can use `pydoc` to read documentation for any class. E.g.:
 
-`AESData.py` has a special `AESData` class which provides an abstraction for using various AES datasets.
-For each dataset, a special JSON card is required:
+```bash
+pydoc AESData
+pydoc AESEmbeddings
+```
+
+## Classes
+
+### Dataset
+
+```python
+from AESData import AESData
+data = AESData("datasets/your-dataset.json")
+print(data.get_essay(5))
+```
+
+Provides abstraction for using various datasets for AES.
+For each dataset, a special JSON manifest file is required:
 
 ```json
 {   
@@ -29,33 +45,32 @@ For each dataset, a special JSON card is required:
         },
         ...
     ],
-    "special_tokens": ["@ORGANIZATION", "@LOCATION", ...], /* List of special tokens that mask certain words */
+    "special_tokens": ["@ORGANIZATION", "@LOCATION", ...], /* List of special tokens that mask certain words in dataset */
     "alternative_tokens": ["organization", "location", ...] /* Replacements for special tokens (may improve results)*/
 }
 ```
 
-Then the dataset can be easily loaded from code:
+### Embeddings
 
 ```python
-from AESData import AESData
-data = AESData("datasets/your-dataset.json")
+from AESEmbeddings import AESEmbeddings, AESSentenceEmbeddings
+embeddings = AESEmbeddings(data) # Requires AESData object
+print(embeddings.get_embeddings(5))
 ```
 
-You can use `pydoc` to read the class documentation:
+Helps to generate and cache embeddings for any essay by its id.
 
-```bash
-pydoc AESData
+`AESEmbeddings` uses standard BERT models from `transformers` library. Model can be specified using `model_name` constructer parameter.
+
+`AESSentenceEmbeddings` uses `sentence_transformers` library. Model can be specified using `model_name` constructer parameter.
+
+### Linguistic Features
+
+```python
+from AESLinguisticFeatures import AESLinguisticFeatures
+features = AESLinguisticFeatures(data)
+print(features.spelling_errors(5))
 ```
-
-ASAP dataset is 
-
-## Embeddings Abstraction
-
-`AESEmbeddings.py` contains `AESEmbeddings` and `AESSententenceEmbeddings` classes which makes it possible to generate and cache embeddings for any essay by id.
-
-You can use initialize them with `AESData` as argument and then use `get_embeddings` function to generate embeddings for any essay by its id.
-
-## Linguistic Features Abstraction
 
 `AESLinguisticFeatures.py` contains `AESLinguisticFeatures` class which helps to extract linguistic features from essays. Refer to `pydoc` to get more information. Currently the following features are supported:
 
