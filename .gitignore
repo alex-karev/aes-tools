@@ -1,5 +1,6 @@
 .env
 __pycache__
-datasets/*.tsv
+*.tsv
+*.csv
 cached_embeddings/*
 cached_sentence_embeddings/*

@@ -3,6 +3,7 @@ import nltk.data
 import pandas as pd
 import statistics
 import os
+import re
 
 class AESData:
     """Abstraction for AES datasets."""
@@ -64,6 +65,10 @@ class AESData:
         """Returns the url where the dataset can be downloaded."""
         return self.p["url"]
     
+    def get_special_tokens(self) -> list:
+        """Returns list of special tokens inside the dataset."""
+        return self.p["special_tokens"]
+
     def get_prompt_min_score(self, prompt: int) -> int:
         """Returns the minimum allowed score of the prompt."""
         return self.p["prompts"][prompt-1]["min_score"]
@@ -75,14 +80,18 @@ class AESData:
     def get_prompt_genre(self, prompt: int) -> str:
         """Returns the genre of the prompt."""
         return self.p["prompts"][prompt-1]["genre"]
-    
+
     #
     # Getters
     #
     
-    def get_essay(self, id: int) -> str:
-        """Returns the essay's full text."""
-        return self.d[id][self.ESSAY_COL]
+    def get_essay(self, id: int, replace_special_tokens: bool = True) -> str:
+        """Returns the essay's full text. Replaces special tokens with their alternatives if needed"""
+        text = self.d[id][self.ESSAY_COL]
+        if replace_special_tokens:
+            for i in range(len(self.p["special_tokens"])):
+                text = re.sub(r'{}\d*\b'.format(self.p["special_tokens"][i]), self.p["alternative_tokens"][i], text)
+        return text
     
     def get_essay_sentences(self, id: int) -> list:
         """Returns the essay's full text split by sentences"""

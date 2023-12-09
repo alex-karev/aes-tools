@@ -61,5 +61,7 @@
             "max_score": 60,
             "genre": "Narrative"
         }
-    ]
+    ],
+    "special_tokens": ["@ORGANIZATION","@CAPS","@DATE","@NUM","@MONTH","@LOCATION","@PERCENT","@PERSON","@MONEY","@CITY","@STATE","@EMAIL","@TIME","@DR"],
+    "alternative_tokens": ["organization","some","anytime","some","month","location","some","person","some","city","state","email","anytime","doctor"]
 }
