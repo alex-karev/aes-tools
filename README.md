@@ -1,4 +1,6 @@
-# Experiments with AES
+# AES Tools
+
+Abstraction layers for simplifying experiments with AES
 
 ## Documentation
 You can use `pydoc` to read documentation for any class. E.g.:
